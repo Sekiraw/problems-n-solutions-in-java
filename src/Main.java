@@ -248,6 +248,84 @@ class  Main
         return fact;
     }
 
+    public static String longestCommonPrefix(String[] strs) {
+        String prefix = strs[0];
+        if (strs.length == 0){
+            return "";
+        }
+
+        for (int i = 0; i < strs.length; i++){
+            while (strs[i].indexOf(prefix) != 0){
+                prefix = prefix.substring(0, prefix.length()-1);
+            }
+        }
+
+        return prefix;
+    }
+
+    public static int[] maxInMatrix(int[][] matrix) {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        for (int i = 0; i < matrix.length; i++){
+            int max = matrix[i][0];
+            for (int j = 0; j < matrix.length;j++) {
+                if (matrix[i][j] > max) {
+                    max = matrix[i][j];
+                }
+            }
+            res.add(max);
+        }
+        int[] result = new int[res.size()];
+        for (int i = 0; i < res.size(); i++) {
+            result[i] = res.get(i);
+        }
+        return result;
+    }
+
+    public static int container(int[] arr)
+    {
+        ArrayList<Integer> cont = new ArrayList<Integer>();
+        for (int i = 0; i < arr.length; i++) {
+            cont.add(arr[i]);
+        }
+        int res = cont_rec(cont, cont.get(0), 0);
+        return res;
+    }
+
+    public static int cont_rec(ArrayList<Integer> arr, int current_max, int val) {
+        // manual here
+        if (arr.size() == 2) {
+            if (arr.get(0) < arr.get(1)) {
+                if(arr.get(1) < current_max) {
+                    val -= arr.get(1);
+                }
+
+            }
+            else if (arr.get(0) > arr.get(1)) {
+                if(val < 0) {
+                    val = 0;
+                }
+            }
+            else {
+                val -= current_max;
+            }
+            return val;
+        }
+
+        int next_el = arr.get(1);
+        if(next_el > current_max) {
+            current_max = next_el;
+        }
+        else if (next_el < current_max) {
+            val += current_max - next_el;
+            if(val < 0) {
+                val = 0;
+            }
+        }
+
+        arr.remove(0);
+
+        return cont_rec(arr, current_max, val);
+    }
 
     public static void main(String args[])  //static method  
     {
@@ -276,6 +354,21 @@ class  Main
 
 //        System.out.println(trap(new int[]{1,0,1,5,2,0,6,2,5}));
 
-        System.out.println(permute(new int[]{1,2,3}));
+//        System.out.println(permute(new int[]{1,2,3}));
+
+//        System.out.println(longestCommonPrefix(new String[]{"flower", "flow", "flight"}));
+
+//        System.out.println(Arrays.toString(maxInMatrix(new int[][]{
+//                {1,8,3},
+//                {6,7,5},
+//                {6,7,4}
+//        })));
+        // 0,0,0,0,1,3,2,3,1,3 -> 3
+        // 2,0,0,0,1,3,2,3,1,3 -> 10
+        // 1,0,1,3,2,3,1 -> 2
+        // 1,0,1,3,2,3,1,4 -> 4
+        // 2,1,0,2,3,2,1,2 -> 4
+        // 3,2,1,0,2,3,2,1,2,3 -> 11
+        System.out.println(container(new int[]{2,0,0,0,1,3,2,3,1,3}));
     }
 }
